@@ -10,10 +10,13 @@ def escape_html(s):
 
 form="""
 <form method="post"> 
+    <label>
     <h1>Enter some text to Rot13</h1>
     <br>
-    <textarea style="width: 350px; height: 150px;" name="rot13" value=%(rot13)s> 
+    <textarea name="text" rows="10" cols="80">
+        %(text)s
     </textarea>
+    </label>
     <br>
     <input type="submit">
 </form> 
@@ -21,14 +24,15 @@ form="""
 
 class MainPage(webapp2.RequestHandler):
 
-    def write_form(self, error="", rot13=""):
-        self.response.out.write(form) 
+    def write_form(self, text="") 
+        self.response.out.write(form % {"text": text}) 
                                     
     def get(self):
-        self.write_form()
+        self.write_form("Begin Here")
 
     def post(self):
-        user_input = self.request.get('rot13')
+        user_input = self.request.get('text') 
+        self.write_form(user_input)
 
 application = webapp2.WSGIApplication([('/', MainPage),
 ], debug=True)
